@@ -1,31 +1,23 @@
-import React from 'react'
 import { useEffect, useState } from 'react'
-import { useAtom } from 'jotai'
 import { Tipo } from '../interface/interface'
 import { apiService } from "../../services/apiServices";
-import { selectedCurtiembreAtom } from '../../context/context'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
 
 interface TipoFProps {
     onValueChange: (id: number) => void;
-    valueCurtiembre: number ;
 }
 
-export function TipoF({ onValueChange, valueCurtiembre }: TipoFProps) {  
-
-    const [selectedCurtiembre] = useAtom(selectedCurtiembreAtom)
+export function TipoF({ onValueChange }: TipoFProps) {  
     const [tipos, setTipos] = useState<Tipo[]>([])
 
     useEffect(() => {
-        
-            apiService.get(`tipo/${valueCurtiembre}`)
+            apiService.get(`tipo`)
             .then((data: Tipo[]) => {
                 setTipos(data)
             })
             .catch(error => {
                 console.log(error)
-            })
-        
+            })        
     },[])
 
     return (

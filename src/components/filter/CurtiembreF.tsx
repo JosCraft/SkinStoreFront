@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
 import { Curtiembre } from "../interface/interface";
 import { apiService } from "../../services/apiServices";
-import { selectedCurtiembreAtom } from "../../context/context";
 import {
   Select,
   SelectContent,
@@ -14,19 +12,19 @@ import {
 } from "../ui/select";
 
 interface CurtiembreFProps {
-  onValueChange: (id: number) => void;
+  onValueChangeCurtiembre: (id: number) => void;
 }
 
 export function CurtiembreF({ 
-  onValueChange }: CurtiembreFProps) {
+  onValueChangeCurtiembre}: CurtiembreFProps) {
 
   const [curtiembres, setCurtiembres] = useState<Curtiembre[]>([]);
-  const [, setSelectedCurtiembre] = useAtom(selectedCurtiembreAtom);
-
+  
   useEffect(() => {
     apiService.get(`curtiembre`)
     .then((data: Curtiembre[]) => {
         setCurtiembres(data);
+        data.push({id: -1, nombre: "Todas", numero: 0})
     })
     .catch(error => {
         console.log(error)
@@ -34,8 +32,7 @@ export function CurtiembreF({
   },[]);
 
   const handleSelect = (id: number) => {
-    const curtiembre = curtiembres.find((curtiembre) => curtiembre.id === id);
-    onValueChange(id);
+    onValueChangeCurtiembre(id);
   }
  
 

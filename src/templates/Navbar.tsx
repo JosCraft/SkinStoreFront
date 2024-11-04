@@ -3,6 +3,8 @@ import NavBarStyle from "./NavBarStyle";
 import { Button } from "../components/ui/button";
 import { Menu, X } from "lucide-react";
 import { FaHome, FaInfoCircle, FaStore } from 'react-icons/fa';
+import { DialogCar } from "../components/dialogCar/DialogCar";
+
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +40,7 @@ const Navbar = () => {
                     </li>
                 </ul>
                 
+                <DialogCar/>
 
                 <Button
                     className="bg-orange-400 md:hidden text-white focus:outline-none focus:ring-2 focus:ring-white rounded hover:bg-orange-600"
