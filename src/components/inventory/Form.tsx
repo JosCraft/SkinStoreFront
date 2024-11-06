@@ -22,6 +22,14 @@ const formSchema = z.object({
 });
 
 export const DataForm = () => {
+
+  const [idCurtiembre, setIdCurtiembre] = useState(0);
+
+
+  const handleCurtiembre = (id: number) => {
+    setIdCurtiembre(id);
+  }
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,7 +68,7 @@ export const DataForm = () => {
             <FormItem>
               <FormLabel>idTipo</FormLabel>
               <FormControl>
-                <CurtiembreF {...field} />
+                <CurtiembreF onValueChangeCurtiembre={handleCurtiembre} />
               </FormControl>
               <FormDescription>
                 This is your public display name.

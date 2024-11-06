@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 import { apiService } from "../../services/apiServices"; 
 import { Material, Tipo } from "../interface/interface";
 import { useEffect, useState } from "react";
-import FormMaterial from "./formMaterial";
+import FormMaterial from "./FormMaterial";
 
 export const TableInventory = () => {
     const [searchTerm, setSearchTerm] = useState("");
