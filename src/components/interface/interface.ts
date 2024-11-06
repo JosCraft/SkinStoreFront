@@ -36,6 +36,7 @@ export interface Material{
 export interface MaterialCar{
     material: Material,
     precio: number,
+    tipo: Tipo,
 }
 
 export interface Car{

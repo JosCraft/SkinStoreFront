@@ -33,7 +33,7 @@ export function CurtiembreF({
 
   const handleSelect = (id: number) => {
     onValueChangeCurtiembre(id);
-  }
+  };  
  
 
     return (

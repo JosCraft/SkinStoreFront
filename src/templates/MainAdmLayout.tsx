@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 export const MainAdmLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="bg-amber-100  flex flex-col min-h-screen">
+    <div className="bg-amber-50  flex flex-col min-h-screen">
     <SidebarProvider>
       <AppSidebar />
             <SidebarTrigger />
