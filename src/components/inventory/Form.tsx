@@ -13,7 +13,8 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { CurtiembreF } from "../filter/CurtiembreF";
+import { SelectCurtiembre } from "./SelectCurtiembre";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -47,7 +48,7 @@ export const DataForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="medida"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
@@ -68,7 +69,7 @@ export const DataForm = () => {
             <FormItem>
               <FormLabel>idTipo</FormLabel>
               <FormControl>
-                <CurtiembreF onValueChangeCurtiembre={handleCurtiembre} />
+                <SelectCurtiembre onValueChangeCurtiembre={handleCurtiembre} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
