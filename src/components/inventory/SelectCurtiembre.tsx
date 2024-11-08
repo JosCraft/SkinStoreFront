@@ -1,5 +1,5 @@
-import React from 'react'
-import { apiService } from '../../services/apiServices'
+import React, { useCallback, useEffect, useState } from 'react';
+import { apiService } from '../../services/apiServices';
 import {
     Select,
     SelectContent,
@@ -8,109 +8,102 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue
-  } from "../ui/select";
+} from "../ui/select";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Curtiembre } from '../interface/interface';
-import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { Input } from '../ui/input';
+import { FormCurtiembre } from './FormCurtiembre';
 import { toast } from '../../hooks/use-toast';
 
 interface CurtiembreFProps {
     onValueChangeCurtiembre: (id: number) => void;
 }
 
-export const SelectCurtiembre = ({ onValueChangeCurtiembre }:CurtiembreFProps) => {
+export const SelectCurtiembre: React.FC<CurtiembreFProps> = ({ onValueChangeCurtiembre }) => {
     const [curtiembres, setCurtiembres] = useState<Curtiembre[]>([]);
     const [isCreate, setIsCreate] = useState(false);
-    
-    const [nombre, setNombre] = useState('');
-    const [numero, setNumero] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchCurtiembres = useCallback(() => {
+        setLoading(true);
+        setError(null);
+        apiService.get('curtiembre')
+            .then(data => setCurtiembres(data))
+            .catch(error => setError("Error al cargar curtiembres"))
+            .finally(() => setLoading(false));
+    }, []);
 
     useEffect(() => {
-            fetchCurtiembres();
-    },[]);
-
-    const fetchCurtiembres = () => {
-        apiService.get(`curtiembre`)
-        .then((data: Curtiembre[]) => {
-            setCurtiembres(data);
-        })
-        .catch(error => {
-            console.log(error)
-        })
-        }
-
-    const handleSelect = (id: number) => {
-        onValueChangeCurtiembre(id);
-    };
-
-    const handleValueNombre = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNombre(e.target.value);
-    }
-
-    const handelValueNumero = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNumero(e.target.value);
-    }   
-
-    const submit = () => {
-        apiService.create('curtiembre', {id:0, nombre: nombre, numero: numero});
-        setIsCreate(!isCreate);
-        toast({
-            title: 'Curtiembre Creada',
-          });
-          fetchCurtiembres();
-    }
-
-    const deleteItem = (id: number) => {
-        console.log(id);
-        apiService.delete(`curtiembre/${id}`);
         fetchCurtiembres();
-    }
+    }, [fetchCurtiembres]);
+
+    const handleSelect = useCallback((nombre: string) => {
+        const id = curtiembres.find(curtiembre => curtiembre.nombre === nombre)?.id || 0;
+        onValueChangeCurtiembre(id);
+    }, [onValueChangeCurtiembre]);
+
+    const deleteItem = useCallback((id: number) => {
+        apiService.delete(`curtiembre/${id}`)
+            .then(() => fetchCurtiembres())
+            .catch(error => setError("Error al eliminar curtiembre"));
+        toast({
+            title: 'Curtiembre eliminada',
+            variant: 'destructive'
+        });
+    }, [fetchCurtiembres]);
 
     return (
-        <>{!isCreate ? (
-            <div className='flex aling-items-center'>
-                <Select onValueChange={handleSelect} >
-                    <SelectTrigger className="">
-                    <SelectValue placeholder="Curtiembres" />
-                    </SelectTrigger>
-                    <SelectContent className="">
-                    <SelectGroup>
-                        <SelectLabel className="">Curtiembres</SelectLabel>
-                        {curtiembres.length > 0 ? (
-                        curtiembres.map((curtiembre) => (
-                            <SelectItem
-                            className=""
-                            key={curtiembre.id}
-                            value={curtiembre.id}
-                            >
-                            <div>
-                            {curtiembre.nombre}
-                            <Button className='bg-red-500 ml-1 hover:bg-red-700' onClick={() => deleteItem(curtiembre.id)}>
-                                <FaRegTrashAlt size={20}/>
-                            </Button>
-                            </div>
-                            </SelectItem>
-                        ))
-                        ) : (
-                        <SelectLabel className="text-orange-800">Loading...</SelectLabel>
-                        )}
-                    </SelectGroup>
-                    </SelectContent>
-                </Select>
-                <Button  className='bg-amber-500 ml-1 hover:bg-amber-700 ' onClick={() => setIsCreate(!isCreate)} >
-                        <CiCirclePlus size={50}/>
-                </Button>
-            </div>
-        ):(
-            <div>
-                <p>Crear Curtiembre</p>
-                <Input onChange={handleValueNombre}  placeholder='Nombre Curtiembre'/>
-                <Input onChange={handelValueNumero}  placeholder='Numero' />
-                <Button onClick={submit}>Guardar</Button>
-            </div>
-        )}</>
-    )
-}
+        <>
+            {!isCreate ? (
+                <div className="flex items-center space-x-4">
+                    <Select onValueChange={handleSelect}>
+                        <SelectTrigger className="text-orange-950 border border-gray-300 rounded-lg  shadow-sm" aria-label="Selecciona una curtiembre">
+                            <SelectValue placeholder="Curtiembres" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-300 rounded-md shadow-lg mt-2 max-h-60 overflow-auto">
+                            <SelectGroup>
+                                <SelectLabel className="text-orange-800 p-2">Curtiembres</SelectLabel>
+                                {loading ? (
+                                    <SelectLabel className="text-orange-800 p-2">Cargando...</SelectLabel>
+                                ) : error ? (
+                                    <SelectLabel className="text-red-800 p-2">{error}</SelectLabel>
+                                ) : (
+                                    curtiembres.map(curtiembre => (
+                                        <SelectItem
+                                            key={curtiembre.id}
+                                            value={curtiembre.nombre}
+                                        >
+                                            <div className="flex justify-between items-center p-2 hover:bg-orange-100 rounded-md transition duration-200 ease-in-out w-full">
+                                                <span className="text-gray-800 font-medium">{curtiembre.nombre}</span>
+                                                <Button
+                                                    aria-label={`Eliminar ${curtiembre.nombre}`}
+                                                    className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150 ease-in-out transform hover:scale-105 ml-2"
+                                                    onClick={() => {
+                                                        deleteItem(curtiembre.id);
+                                                    }}
+                                                >
+                                                    <FaRegTrashAlt size={14} />
+                                                </Button>
+                                            </div>                                            
+                                        </SelectItem>
+                                    ))
+                                )}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <Button
+                        aria-label="Crear nueva curtiembre"
+                        className="bg-amber-500 hover:bg-amber-700 text-white p-2 rounded-lg shadow-sm"
+                        onClick={() => setIsCreate(true)}
+                    >
+                        <CiCirclePlus size={24} />
+                    </Button>
+                </div>
+            ) : (
+                <FormCurtiembre setIsCreate={setIsCreate} fetchCurtiembres={fetchCurtiembres} />
+            )}
+        </>
+    );
+};
