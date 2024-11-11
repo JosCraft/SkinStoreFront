@@ -3,16 +3,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "../ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { SelectCurtiembre } from "./SelectCurtiembre";
 import { useState } from "react";
 
@@ -44,43 +36,15 @@ export const DataForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="medida"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="idTipo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>idTipo</FormLabel>
-              <FormControl>
-                <SelectCurtiembre onValueChangeCurtiembre={handleCurtiembre} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <div>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Label>Username</Label>
+        <Input {...form.register("username")} />
+        <SelectCurtiembre handleCurtiembre={handleCurtiembre} />
+        
         <Button type="submit">Submit</Button>
       </form>
-    </Form>
+    </div>
   );
 };
 
