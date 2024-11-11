@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { SelectCurtiembre } from "./SelectCurtiembre";
+import { SelectCategoria } from "./SelectCategoria";
+import { SelectTipo } from "./SelectTipo";
 import { useState } from "react";
 
 const formSchema = z.object({
@@ -17,10 +19,19 @@ const formSchema = z.object({
 export const DataForm = () => {
 
   const [idCurtiembre, setIdCurtiembre] = useState(0);
-
+  const [idCategoria, setIdCategoria] = useState(0);
+  const [idTipo, setIdTipo] = useState(0);
 
   const handleCurtiembre = (id: number) => {
     setIdCurtiembre(id);
+  }
+
+  const handleCategoria = (id: number) => {
+    setIdCategoria(id);
+  }
+
+  const handleTipo = (id: number) => {
+    setIdTipo(id);
   }
 
   const form = useForm({
@@ -37,13 +48,9 @@ export const DataForm = () => {
 
   return (
     <div>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Label>Username</Label>
-        <Input {...form.register("username")} />
-        <SelectCurtiembre handleCurtiembre={handleCurtiembre} />
-        
-        <Button type="submit">Submit</Button>
-      </form>
+      <SelectCurtiembre onValueChangeCurtiembre={handleCurtiembre} />
+      <SelectCategoria onValueChange={handleCategoria} />
+      <SelectTipo onValueChange={handleTipo}  idCategoria={idCategoria} idCurtiembre={idCurtiembre}  />
     </div>
   );
 };

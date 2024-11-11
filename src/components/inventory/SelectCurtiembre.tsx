@@ -57,7 +57,7 @@ export const SelectCurtiembre: React.FC<CurtiembreFProps> = ({ onValueChangeCurt
     return (
         <>
             {!isCreate ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 mb-2">
                     <Select onValueChange={handleSelect}>
                         <SelectTrigger className="text-orange-950 border border-gray-300 rounded-lg  shadow-sm" aria-label="Selecciona una curtiembre">
                             <SelectValue placeholder="Curtiembres" />
