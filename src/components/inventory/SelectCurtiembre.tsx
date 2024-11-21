@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
 import { apiService } from '../../services/apiServices';
 import {
     Select,
@@ -16,22 +17,24 @@ import { Button } from '../ui/button';
 import { FormCurtiembre } from './FormCurtiembre';
 import { toast } from '../../hooks/use-toast';
 
-interface CurtiembreFProps {
-    onValueChangeCurtiembre: (id: number) => void;
-}
+import { selectedCurtiembreAtom  } from '../../context/context';
 
-export const SelectCurtiembre: React.FC<CurtiembreFProps> = ({ onValueChangeCurtiembre }) => {
+
+
+export const SelectCurtiembre = () => {
     const [curtiembres, setCurtiembres] = useState<Curtiembre[]>([]);
     const [isCreate, setIsCreate] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [, setiDCurtiembre] = useAtom(selectedCurtiembreAtom);
+
 
     const fetchCurtiembres = useCallback(() => {
         setLoading(true);
         setError(null);
         apiService.get('curtiembre')
             .then(data => setCurtiembres(data))
-            .catch(error => setError("Error al cargar curtiembres"))
+            .catch(error => setError(`Error al cargar curtiembres ${error.message} `))
             .finally(() => setLoading(false));
     }, []);
 
@@ -41,13 +44,14 @@ export const SelectCurtiembre: React.FC<CurtiembreFProps> = ({ onValueChangeCurt
 
     const handleSelect = useCallback((nombre: string) => {
         const id = curtiembres.find(curtiembre => curtiembre.nombre === nombre)?.id || 0;
-        onValueChangeCurtiembre(id);
-    }, [onValueChangeCurtiembre]);
+        console.log('id', id);
+        setiDCurtiembre(id);
+    },[]);
 
     const deleteItem = useCallback((id: number) => {
         apiService.delete(`curtiembre/${id}`)
             .then(() => fetchCurtiembres())
-            .catch(error => setError("Error al eliminar curtiembre"));
+            .catch(error => setError(`Error al eliminar curtiembre: ${error.message}`));
         toast({
             title: 'Curtiembre eliminada',
             variant: 'destructive'
