@@ -33,11 +33,11 @@ export const SelectCategoria = () => {
         fetchCategorias();
     },[fetchCategorias]);
 
-    const handleCategoria = useCallback((nombre: string) => {
+    const handleCategoria = (nombre: string) => {
         const id = categorias.find(categoria => categoria.nombre === nombre)?.id || 0;
         console.log('id', id);
         setIdCategoria(id);
-    },[]);
+    };
 
     const deleteItem = useCallback((id: number) => {
         apiService.delete(`catematerial/${id}`)

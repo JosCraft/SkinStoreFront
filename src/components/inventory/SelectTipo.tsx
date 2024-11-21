@@ -9,66 +9,49 @@ import { Button } from '../ui/button';
 import { FormCurtiembre } from './FormCurtiembre';
 import { toast } from '../../hooks/use-toast';
 
+import { filterItems } from '../../lib/utils';
+
 import { selectedCategoriaAtom, selectedCurtiembreAtom } from '../../context/context';
+import { set } from 'react-hook-form';
 
 
 
 export const SelectTipo = () => {
-    const [tipos, setTipos] = useState<Tipo[]>([]);
+    const [items, setItems] = useState<Tipo[]>([]);
+    const [originalItems, setOriginalItems] = useState<Tipo[]>([]);
     const [isCreate, setIsCreate] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [originalItems, setOriginalItems] = useState<Tipo[]>([]);
 
     const [idCategoria] = useAtom(selectedCategoriaAtom);
     const [idCurtiembre] = useAtom(selectedCurtiembreAtom);
 
-   
-    // Fetch initial data
-    const fetchTipos = useCallback(() => {
-        setLoading(true);
-        setError(null);
+    useEffect(() => {
+        fetchItems();    
+      }, []);
+ 
+      const fetchItems = () => {
         apiService.get('tipo')
-            .then((data: Tipo[]) => {
-                setOriginalItems(data);
-                setTipos(data);
-            })
-            .catch(() => setError("Error al cargar tipos"))
-            .finally(() => setLoading(false));
-    }, []);
-
+          .then((data: Tipo[]) => {
+            setOriginalItems(data); 
+            setItems(data); 
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
     useEffect(() => {
-        fetchTipos();
-    }, [fetchTipos]);
+        setItems(filterItems(originalItems, idCategoria, idCurtiembre));
+    }, [idCategoria, idCurtiembre]);
 
-    useEffect(() => {
-        
-        filterItems();
-    }, [idCategoria, idCurtiembre, originalItems]);
+    console.log('Items ',items, 'OriginalItems ', originalItems);	
 
-    // Filter items based on `idCategoria` and `idCurtiembre`
-    const filterItems = useCallback(() => {
-        let filteredItems = originalItems;
-        console.log(filteredItems);
-        if (idCategoria !== -1) {
-            filteredItems = filteredItems.filter(item => item.idCategoria === idCategoria);
-            console.log(filteredItems, ' idCategoria ', idCategoria);
-        }
-
-        if (idCurtiembre !== -1) {
-            filteredItems = filteredItems.filter(item => item.idCurtiembre === idCurtiembre);
-            console.log(filteredItems);
-        }
-        
-        setTipos(filteredItems);
-    }, [idCategoria, idCurtiembre, originalItems]);
-
-    const handleSelect = useCallback((nombre: string) => {
-        const selectedTipo = tipos.find(tipo => tipo.nombre === nombre);
+    const handleSelect = (nombre: string) => {
+        const selectedTipo = items.find(item => item.nombre === nombre);
         if (selectedTipo) {
           console.log(selectedTipo);
         }
-    }, [tipos]);
+    };
 
     const deleteItem = useCallback((id: number) => {
         apiService.delete(`tipo/${id}`)
@@ -77,10 +60,10 @@ export const SelectTipo = () => {
                     title: 'Tipo eliminado',
                     variant: 'destructive',
                 });
-                fetchTipos();
+                setItems(filterItems(originalItems, idCategoria, idCurtiembre));
             })
             .catch(() => setError("Error al eliminar tipo"));
-    }, [fetchTipos]);
+    }, [originalItems, idCategoria, idCurtiembre]);
 
     return (
         <>
@@ -98,17 +81,17 @@ export const SelectTipo = () => {
                                 ) : error ? (
                                     <SelectLabel className="text-red-800 p-2">{error}</SelectLabel>
                                 ) : (
-                                    tipos.map(tipo => (
+                                    items.map((item) => (
                                         <SelectItem
-                                            key={tipo.id}
-                                            value={tipo.nombre}
+                                            key={item.id}
+                                            value={item.nombre}
                                         >
                                             <div className="flex justify-between items-center p-2 hover:bg-orange-100 rounded-md transition duration-200 ease-in-out w-full">
-                                                <span className="text-gray-800 font-medium">{tipo.nombre}</span>
+                                                <span className="text-gray-800 font-medium">{item.nombre}</span>
                                                 <Button
-                                                    aria-label={`Eliminar ${tipo.nombre}`}
+                                                    aria-label={`Eliminar ${item.nombre}`}
                                                     className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150 ease-in-out transform hover:scale-105 ml-2"
-                                                    onClick={() => deleteItem(tipo.id)}
+                                                    onClick={() => deleteItem(item.id)}
                                                 >
                                                     <FaRegTrashAlt size={14} />
                                                 </Button>
@@ -128,7 +111,7 @@ export const SelectTipo = () => {
                     </Button>
                 </div>
             ) : (
-                <FormCurtiembre setIsCreate={setIsCreate} fetchCurtiembres={fetchTipos} />
+                <FormCurtiembre setIsCreate={setIsCreate} fetchCurtiembres={fetchItems} />
             )}
         </>
     );

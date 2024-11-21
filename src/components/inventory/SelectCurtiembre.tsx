@@ -42,11 +42,11 @@ export const SelectCurtiembre = () => {
         fetchCurtiembres();
     }, [fetchCurtiembres]);
 
-    const handleSelect = useCallback((nombre: string) => {
+    const handleSelect = (nombre: string) => {
         const id = curtiembres.find(curtiembre => curtiembre.nombre === nombre)?.id || 0;
         console.log('id', id);
         setiDCurtiembre(id);
-    },[]);
+    };
 
     const deleteItem = useCallback((id: number) => {
         apiService.delete(`curtiembre/${id}`)
