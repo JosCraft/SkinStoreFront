@@ -18,23 +18,7 @@ const formSchema = z.object({
 
 export const DataForm = () => {
 
-  const [idCurtiembre, setIdCurtiembre] = useState(0);
-  const [idCategoria, setIdCategoria] = useState(0);
-  const [idTipo, setIdTipo] = useState(0);
-
-  const handleCurtiembre = (id: number) => {
-    setIdCurtiembre(id);
-  }
-
-  const handleCategoria = (id: number) => {
-    setIdCategoria(id);
-  }
-
-  const handleTipo = (id: number) => {
-    setIdTipo(id);
-  }
-
-  const form = useForm({
+   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
         idTipo: 0,
@@ -48,9 +32,9 @@ export const DataForm = () => {
 
   return (
     <div>
-      <SelectCurtiembre onValueChangeCurtiembre={handleCurtiembre} />
-      <SelectCategoria onValueChange={handleCategoria} />
-      <SelectTipo onValueChange={handleTipo}  idCategoria={idCategoria} idCurtiembre={idCurtiembre}  />
+      <SelectCurtiembre />
+      <SelectCategoria  />
+      <SelectTipo />
     </div>
   );
 };

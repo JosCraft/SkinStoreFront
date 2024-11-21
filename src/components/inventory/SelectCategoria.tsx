@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useAtom } from 'jotai'
 import { Categoria } from '../interface/interface'
 import { apiService } from "../../services/apiServices";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
@@ -8,24 +9,23 @@ import { Button } from '../ui/button';
 import { FormCategoria } from './FormCategoria';
 import { toast } from '../../hooks/use-toast';
 import { set } from 'react-hook-form';
+import { selectedCategoriaAtom } from '../../context/context';
 
-interface CategoriaProps {
-    onValueChange: (id: number) => void;
-}
 
-export const SelectCategoria = ({onValueChange}:CategoriaProps) => {
+export const SelectCategoria = () => {
   
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [isCreate, setIsCreate] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [,setIdCategoria] = useAtom(selectedCategoriaAtom);
 
     const fetchCategorias = useCallback(() => {
         setLoading(true);
         setError(null);
         apiService.get('catematerial')
         .then(data => setCategorias(data))
-        .catch(error => setError("Error al cargar categorias"))
+        .catch(error => setError(`Error al cargar categorias ${error.message} `))
         .finally(() => setLoading(false));
     },[]);
     
@@ -35,13 +35,14 @@ export const SelectCategoria = ({onValueChange}:CategoriaProps) => {
 
     const handleCategoria = useCallback((nombre: string) => {
         const id = categorias.find(categoria => categoria.nombre === nombre)?.id || 0;
-        onValueChange(id);
-    },[onValueChange]);
+        console.log('id', id);
+        setIdCategoria(id);
+    },[]);
 
     const deleteItem = useCallback((id: number) => {
         apiService.delete(`catematerial/${id}`)
         .then(() => fetchCategorias())
-        .catch(error => setError("Error al eliminar categoria"));
+        .catch(error => setError(`Error al eliminar categoria  ${error.message}`));
         toast({
             title: 'Categoria eliminada',
             variant: 'destructive'
