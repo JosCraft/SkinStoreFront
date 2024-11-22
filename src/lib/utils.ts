@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 
-export const filterItems = (originalItems:Tipo[], selectedCategoria:number , selectedCurtiembre:number ) => {
+export const filterItems = (originalItems:Tipo[], selectedCategoria:number , selectedCurtiembre:number, selectedColor:number ) => {
   let filteredItems = originalItems;
 
   if (selectedCategoria !== -1) {
@@ -19,6 +19,11 @@ export const filterItems = (originalItems:Tipo[], selectedCategoria:number , sel
   if (selectedCurtiembre !== -1) {
     filteredItems = filteredItems.filter(item => item.idCurtiembre === selectedCurtiembre);
    
+  }
+
+  if (selectedColor !== -1) {
+    filteredItems = filteredItems.filter(item => item.idColor === selectedColor);
+    
   }
 
   return filteredItems;

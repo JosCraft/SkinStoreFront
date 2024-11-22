@@ -8,7 +8,6 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { Button } from '../ui/button';
 import { FormCategoria } from './FormCategoria';
 import { toast } from '../../hooks/use-toast';
-import { set } from 'react-hook-form';
 import { selectedCategoriaAtom } from '../../context/context';
 
 

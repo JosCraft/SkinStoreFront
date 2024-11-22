@@ -32,6 +32,7 @@ export interface Material{
     medida: string,
     idTipo: number,
     tipo ?: Tipo,
+    curtiembre ?: Curtiembre,
 }
 
 export interface MaterialCar{

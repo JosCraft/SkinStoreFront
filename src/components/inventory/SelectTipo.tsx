@@ -11,8 +11,7 @@ import { toast } from '../../hooks/use-toast';
 
 import { filterItems } from '../../lib/utils';
 
-import { selectedCategoriaAtom, selectedCurtiembreAtom } from '../../context/context';
-import { set } from 'react-hook-form';
+import { selectedCategoriaAtom, selectedCurtiembreAtom, selectedColorAtom } from '../../context/context';
 
 
 
@@ -20,11 +19,12 @@ export const SelectTipo = () => {
     const [items, setItems] = useState<Tipo[]>([]);
     const [originalItems, setOriginalItems] = useState<Tipo[]>([]);
     const [isCreate, setIsCreate] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const [idCategoria] = useAtom(selectedCategoriaAtom);
     const [idCurtiembre] = useAtom(selectedCurtiembreAtom);
+    const [idColor ] = useAtom(selectedColorAtom);
 
     useEffect(() => {
         fetchItems();    
@@ -41,8 +41,8 @@ export const SelectTipo = () => {
           });
       }
     useEffect(() => {
-        setItems(filterItems(originalItems, idCategoria, idCurtiembre));
-    }, [idCategoria, idCurtiembre]);
+        setItems(filterItems(originalItems, idCategoria, idCurtiembre, idColor));
+    }, [idCategoria, idCurtiembre,idColor, originalItems]);
 
     console.log('Items ',items, 'OriginalItems ', originalItems);	
 
@@ -60,10 +60,10 @@ export const SelectTipo = () => {
                     title: 'Tipo eliminado',
                     variant: 'destructive',
                 });
-                setItems(filterItems(originalItems, idCategoria, idCurtiembre));
+                setItems(filterItems(originalItems, idCategoria, idCurtiembre, idColor));
             })
             .catch(() => setError("Error al eliminar tipo"));
-    }, [originalItems, idCategoria, idCurtiembre]);
+    }, [originalItems, idCategoria, idCurtiembre, idColor]);
 
     return (
         <>
