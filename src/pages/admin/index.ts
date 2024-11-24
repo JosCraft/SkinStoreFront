@@ -1,2 +1,3 @@
-export { default as Dashboard } from './Dashboard';
-export { default as Inventory } from './Inventory';
+export * from './Dashboard';
+export * from './Inventory';
+export { default as Admin } from './Admin';

@@ -1,5 +1,6 @@
 import { Calendar, Home, Inbox, Search, Settings, Archive } from "lucide-react"
-
+import { HiBuildingStorefront, HiOutlineUsers } from "react-icons/hi2";
+import { BiLineChart } from "react-icons/bi";
 import {
   Sidebar,
   SidebarContent,
@@ -24,19 +25,19 @@ const items = [
     icon: Archive,
   },
   {
-    title: "Calendar",
+    title: "Pedidos",
     url: "#",
-    icon: Calendar,
+    icon: HiBuildingStorefront ,
   },
   {
-    title: "Search",
+    title: "Usuarios",
     url: "#",
-    icon: Search,
+    icon: HiOutlineUsers,
   },
   {
-    title: "Settings",
+    title: "Informes",
     url: "#",
-    icon: Settings,
+    icon: BiLineChart ,
   },
 ]
 

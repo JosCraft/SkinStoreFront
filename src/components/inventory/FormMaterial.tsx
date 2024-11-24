@@ -20,26 +20,27 @@ const FormMaterial = () => {
   return (
     <Dialog open={isVisible} onOpenChange={setIsVisible}>
         <DialogTrigger asChild>
-        <Button className="bg-amber-500 text-white font-semibold hover:bg-amber-600 rounded-md px-4 py-2 transition-colors duration-200">
-            <HiMiniPlusCircle size={35} />
-            Agregar Material
-        </Button>
+            <Button className="bg-amber-500 text-white font-semibold hover:bg-amber-600 rounded-md px-4 py-2 transition-colors duration-200">
+                <HiMiniPlusCircle size={35} />
+                Agregar Material
+            </Button>
         </DialogTrigger>
 
         <DialogContent 
-        aria-describedby="dialog-description" 
-        className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg"
+            aria-describedby="dialog-description" 
+            className="max-w-lg mx-auto p-6 bg-amber-100 rounded-lg shadow-lg"
         >
-        <DialogHeader className="border-b pb-4">
-            <DialogTitle className="text-xl font-semibold text-gray-800">
-            Seleccione los materiales que llevará
-            </DialogTitle>
-        </DialogHeader>
-        <DialogDescription asChild >
-             <DataForm/>
-        </DialogDescription>
+            <DialogHeader className="border-b pb-4">
+                <DialogTitle className="text-center text-xl font-bold mb-4 text-gray-700">
+                  Gestion de materiales
+                </DialogTitle>
+            </DialogHeader>
+            <DialogDescription asChild>
+                <DataForm/>
+            </DialogDescription>
         </DialogContent>
     </Dialog>
+
   )
 }
 

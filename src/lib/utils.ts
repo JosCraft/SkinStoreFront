@@ -13,17 +13,14 @@ export const filterItems = (originalItems:Tipo[], selectedCategoria:number , sel
 
   if (selectedCategoria !== -1) {
     filteredItems = filteredItems.filter(item => item.idCategoria === selectedCategoria);
- 
   }
 
   if (selectedCurtiembre !== -1) {
     filteredItems = filteredItems.filter(item => item.idCurtiembre === selectedCurtiembre);
-   
   }
 
   if (selectedColor !== -1) {
     filteredItems = filteredItems.filter(item => item.idColor === selectedColor);
-    
   }
 
   return filteredItems;

@@ -34,7 +34,6 @@ export const SelectCategoria = () => {
 
     const handleCategoria = (nombre: string) => {
         const id = categorias.find(categoria => categoria.nombre === nombre)?.id || 0;
-        console.log('id', id);
         setIdCategoria(id);
     };
 

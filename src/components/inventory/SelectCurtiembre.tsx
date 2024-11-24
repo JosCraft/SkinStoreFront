@@ -44,7 +44,6 @@ export const SelectCurtiembre = () => {
 
     const handleSelect = (nombre: string) => {
         const id = curtiembres.find(curtiembre => curtiembre.nombre === nombre)?.id || 0;
-        console.log('id', id);
         setiDCurtiembre(id);
     };
 

@@ -6,9 +6,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { CiCirclePlus } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Button } from '../ui/button';
-import { FormCurtiembre } from './FormCurtiembre';
+import { FormTipo } from './FormTipo';
 import { toast } from '../../hooks/use-toast';
-
+import { selectedTipoAtom } from '../../context/context';
 import { filterItems } from '../../lib/utils';
 
 import { selectedCategoriaAtom, selectedCurtiembreAtom, selectedColorAtom } from '../../context/context';
@@ -25,6 +25,8 @@ export const SelectTipo = () => {
     const [idCategoria] = useAtom(selectedCategoriaAtom);
     const [idCurtiembre] = useAtom(selectedCurtiembreAtom);
     const [idColor ] = useAtom(selectedColorAtom);
+
+    const [, setIdTipo] = useAtom(selectedTipoAtom);
 
     useEffect(() => {
         fetchItems();    
@@ -44,12 +46,10 @@ export const SelectTipo = () => {
         setItems(filterItems(originalItems, idCategoria, idCurtiembre, idColor));
     }, [idCategoria, idCurtiembre,idColor, originalItems]);
 
-    console.log('Items ',items, 'OriginalItems ', originalItems);	
-
     const handleSelect = (nombre: string) => {
         const selectedTipo = items.find(item => item.nombre === nombre);
         if (selectedTipo) {
-          console.log(selectedTipo);
+          setIdTipo(selectedTipo.id);
         }
     };
 
@@ -111,7 +111,7 @@ export const SelectTipo = () => {
                     </Button>
                 </div>
             ) : (
-                <FormCurtiembre setIsCreate={setIsCreate} fetchCurtiembres={fetchItems} />
+                <FormTipo setIsCreate={setIsCreate} fetchCurtiembres={fetchItems} />
             )}
         </>
     );

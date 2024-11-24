@@ -37,12 +37,37 @@ export const FormCurtiembre = ({
     }
 
     return (
-        <div>
-            <p>Crear Curtiembre</p>
-            <Input onChange={handleValueNombre}  placeholder='Nombre Curtiembre'/>
-            <Input onChange={handelValueNumero}  placeholder='Numero' />
-            <Button onClick={submit}>Guardar</Button>
-            <Button onClick={() => setIsCreate(false)}>Cancelar</Button>
+        <div className="p-4 bg-amber-50 rounded-lg shadow-lg space-y-4" >
+            <h2 className='text-lg font-semibold text-stone-700'>Crear Curtiembre</h2>
+
+            <div className="space-y-2">
+                <label className='block text-sm font-medium text-stone-900'>Nombre Curtiembre</label>
+                <Input onChange={handleValueNombre}  placeholder='Nombre Curtiembre'
+                 className="w-full border-stone-900 rounded-lg shadow-sm focus:ring focus:ring-amber-500 focus:outline-none"
+                />
+            </div>
+
+            <div className="space-y-2">
+                <label className='block text-sm font-medium text-stone-900'>Numero</label>
+                <Input onChange={handelValueNumero}  placeholder='Numero' 
+                   className="w-full border-stone-900 rounded-lg shadow-sm focus:ring focus:ring-amber-500 focus:outline-none"                              
+                />    
+            </div>
+
+            <div className="flex justify-center space-x-4 mt-4">
+                <Button
+                    onClick={() => setIsCreate(false)}
+                    className="bg-amber-500 hover:bg-amber-700 text-white rounded-lg px-4 py-2"
+                >
+                    Cancelar
+                </Button>
+                <Button
+                    onClick={submit}
+                    className="bg-amber-600 hover:bg-amber-800 text-white rounded-lg px-4 py-2"
+                >
+                    Guardar
+                </Button>
+            </div>
         </div>
     )
 }
