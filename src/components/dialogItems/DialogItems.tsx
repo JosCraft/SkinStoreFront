@@ -15,7 +15,8 @@ import { apiService } from "../../services/apiServices";
 import { useEffect, useState } from "react";
 import { Button } from '../ui/button';
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
-import { priceTotalAtom, listMaterialAtom } from "../../context/context";
+import { CiTrash } from "react-icons/ci";
+import { priceTotalAtom, listMaterialAtom, addedItems } from "../../context/context";
 
 interface DialogItemsProps {
   selecTipo: number;
@@ -29,6 +30,8 @@ export const DialogItems = (
   const [isVisible, setIsVisible] = useState(false);
   const [priceTotal, setPriceTotal] = useAtom(priceTotalAtom);
   const [listMaterial, setListMaterial] = useAtom(listMaterialAtom);
+  const [addItems, setAddedItems] = useAtom(addedItems);
+
 
   useEffect(() => {
     if(isVisible){
@@ -45,14 +48,37 @@ export const DialogItems = (
         });
       }
     }
+  
   }, [selecTipo, isVisible]);
 
+  //estar escuchando los cambios que tenga addedItems
+  useEffect(() => {
+    setAddedItems(new Set(listMaterial.map((item) => item.material.id)));
+  }, [listMaterial, setAddedItems]);
+
+
   const handleAddToCart = (item: Material) => {
-    let price_base = parseFloat((precio * parseFloat(item.medida)).toFixed(2));
+    const price_base = parseFloat((precio * parseFloat(item.medida)).toFixed(2));
     setPriceTotal(priceTotal + price_base);
     setListMaterial([...listMaterial, {material: item, precio: price_base}]);
+    setAddedItems((prev) => new Set(prev).add(item.id));
     toast({
       title: 'Material agregado al carrito',
+    });
+  };
+
+  const handleRemoveToCart = (item: Material) => {
+    const price_base = parseFloat((precio * parseFloat(item.medida)).toFixed(2));
+    setPriceTotal(priceTotal - price_base);
+    setListMaterial(listMaterial.filter((material: MaterialCar) => material.material.id !== item.id));
+ 
+    setAddedItems((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(item.id);
+      return newSet;
+    });
+    toast({
+      title: 'Material eliminado del carrito',
     });
   }
 
@@ -78,6 +104,7 @@ export const DialogItems = (
           {items.map((item) => (
             <div 
               key={item.id} 
+              id={`item-${item.id}`}
               className="flex items-center justify-between border-b pb-2"
             >
               <div className="flex items-center space-x-3">
@@ -87,16 +114,31 @@ export const DialogItems = (
                 </span>
                 <span className="text-sm text-amber-700 font-medium">Precio:</span>
                 <span className="text-amber-900 font-semibold">
-                  Bs {(precio.toFixed(2) * item.medida).toFixed(2)}
+                  Bs {(precio.toFixed(2) * item.medida).toFixed(2)} 
                 </span>
               </div>
-              <button
-                className="flex items-center bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full p-2 transition-colors duration-200"
-                onClick={() => handleAddToCart(item)}
-                aria-label="Agregar al carrito"
-              >
-                <MdOutlineLocalGroceryStore className="text-xl" />
-              </button>
+              {addItems.has(item.id) ?
+                <>
+                <button
+                    className="flex items-center bg-red-800 hover:bg-red-600 text-white font-semibold rounded-full p-2 transition-colors duration-200" 
+                    onClick={() => {handleRemoveToCart(item)}}
+                    aria-label="Agregar al carrito"
+                    >
+                      <CiTrash className="text-xl" />
+                    </button>
+
+                </>
+                :
+                <>  
+                  <button
+                    className="flex items-center bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full p-2 transition-colors duration-200" 
+                    onClick={() => {handleAddToCart(item)}}
+                    aria-label="Agregar al carrito"
+                    >
+                      <MdOutlineLocalGroceryStore className="text-xl" />
+                    </button>
+                </>
+              }
             </div>
           ))}
         </div>

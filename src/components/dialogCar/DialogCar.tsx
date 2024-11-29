@@ -11,28 +11,61 @@ import {
   import { useState } from "react";
   import { Button } from "../ui/button";
   import { MdOutlineLocalGroceryStore } from "react-icons/md";
-  import { priceTotalAtom, listMaterialAtom } from "../../context/context";
+  import { priceTotalAtom, listMaterialAtom,addedItems } from "../../context/context";
+import { apiService } from "../../services/apiServices";
   
   export const DialogCar = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [priceTotal, setPriceTotal] = useAtom(priceTotalAtom);
     const [listMaterial, setListMaterial] = useAtom(listMaterialAtom);
-  
+    const [, setAddedItems] = useAtom(addedItems);
+
     const handleRemoveItem = (id) => {
+      const item = listMaterial.find((item) => item.material.id === id);
       const updatedList = listMaterial.filter((item) => item.material.id !== id);
       setListMaterial(updatedList);
-  
-      // Recalculate total price
+      setAddedItems((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(item.id);
+        return newSet;
+      });
       const updatedTotal = updatedList.reduce((total, item) => total + item.precio, 0);
       setPriceTotal(updatedTotal);
     };
   
     const handlePurchase = () => {
-      // Here, you could add the purchase logic, e.g., submitting to a backend
+      
+      let idVenta = 0;
+
+      // Obtener la fecha actual en formato ISO (para convertirla a tipo `date`)
+      const fecha = new Date().toISOString().split('T')[0];
+      
+      // Convertir priceTotal a string para cumplir con el tipo `totalVenta`
+      const totalVenta = priceTotal.toFixed(2); // Redondeamos a dos decimales y convertimos a string
+      
+      // Llamar al API para crear la venta
+      apiService
+        .create('venta', { id: 0, fecha, totalVenta, idUsuario: 1 })
+        .then((data) => {
+          idVenta = data.id; // Asignar el ID devuelto por la API
+          console.log('Venta creada con éxito. ID:', idVenta);
+        })
+        .catch((error) => {
+          console.error('Error al crear la venta:', error);
+        });
+
+      console.log(idVenta);
+      //remover de inventario todos los items
+      listMaterial.map((item) => {
+        apiService.delete(`inventario/${item.material.id}`);
+        apiService.create('ventamaterial',{idVenta:idVenta,idMaterial:item.material.id});
+      }
+      );
+
       alert("Compra realizada exitosamente!");
-      setListMaterial([]);  // Clear the cart after purchase
-      setPriceTotal(0);     // Reset total price
-      setIsVisible(false);   // Close dialog
+      setListMaterial([]);  
+      setPriceTotal(0);    
+      setIsVisible(false);   
     };
   
     return (

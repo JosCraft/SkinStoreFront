@@ -1,6 +1,6 @@
 import React from 'react'
-import MainAdmLayout from '../../templates/MainAdmLayout'
-import { TableInventory } from '../../components/inventory'
+import {MainAdmLayout} from '../../../templates'
+import { TableInventory } from '../../../components'
 
 export const Inventory = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import MainAdmLayout from '../../templates/MainAdmLayout'
+import MainAdmLayout from '../../../templates/MainAdmLayout'
 
 export const Dashboard = () => {
   return (

@@ -10,3 +10,4 @@ export const selectedTipoAtom = atom<number>(-1);
 export const priceTotalAtom = atom<number>(0);
 export const listCarAtom = atom<Car>();
 export const listMaterialAtom = atom<MaterialCar[]>([]);
+export const addedItems = atom<Set<number>>(new Set<number>());
