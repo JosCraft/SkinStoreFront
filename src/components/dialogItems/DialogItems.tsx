@@ -38,7 +38,7 @@ export const DialogItems = (
       if(selecTipo !== -1){
         console.log(selecTipo);
         apiService
-        .get(`material?id_tipo=${selecTipo}`)
+        .get(`inventarios/${selecTipo}`)
         .then((data: Material[]) => {
           console.log(data);
           setItems(data);

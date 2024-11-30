@@ -33,39 +33,33 @@ import { apiService } from "../../services/apiServices";
       setPriceTotal(updatedTotal);
     };
   
-    const handlePurchase = () => {
-      
-      let idVenta = 0;
-
-      // Obtener la fecha actual en formato ISO (para convertirla a tipo `date`)
-      const fecha = new Date().toISOString().split('T')[0];
-      
-      // Convertir priceTotal a string para cumplir con el tipo `totalVenta`
-      const totalVenta = priceTotal.toFixed(2); // Redondeamos a dos decimales y convertimos a string
-      
-      // Llamar al API para crear la venta
-      apiService
-        .create('venta', { id: 0, fecha, totalVenta, idUsuario: 1 })
-        .then((data) => {
-          idVenta = data.id; // Asignar el ID devuelto por la API
-          console.log('Venta creada con éxito. ID:', idVenta);
-        })
-        .catch((error) => {
-          console.error('Error al crear la venta:', error);
-        });
-
-      console.log(idVenta);
-      //remover de inventario todos los items
-      listMaterial.map((item) => {
-        apiService.delete(`inventario/${item.material.id}`);
-        apiService.create('ventamaterial',{idVenta:idVenta,idMaterial:item.material.id});
+    const handlePurchase = async () => {
+      try {
+        const fecha = new Date().toISOString().split('T')[0];
+        const totalVenta = priceTotal.toFixed(2);
+    
+        // Crear la venta y obtener el ID
+        const ventaResponse = await apiService.create('venta', { id: 0, fecha, totalVenta, idUsuario: 1 });
+        const idVenta = ventaResponse.id;
+    
+        console.log('Venta creada con éxito. ID:', idVenta);
+    
+        // Actualizar inventario y registrar materiales en la venta
+        for (const item of listMaterial) {
+          await apiService.delete(`inventario/${item.material.id}`);
+          await apiService.create('ventamaterial', { idVenta, idMaterial: item.material.id });
+        }
+    
+        alert('Compra realizada exitosamente!');
+        
+        // Limpiar el estado
+        setListMaterial([]);
+        setPriceTotal(0);
+        setIsVisible(false);
+      } catch (error) {
+        console.error('Error al procesar la compra:', error);
+        alert('Hubo un error al realizar la compra. Por favor, inténtalo nuevamente.');
       }
-      );
-
-      alert("Compra realizada exitosamente!");
-      setListMaterial([]);  
-      setPriceTotal(0);    
-      setIsVisible(false);   
     };
   
     return (
