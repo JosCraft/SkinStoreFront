@@ -56,6 +56,5 @@ export interface Venta{
 export interface VentaMaterial{
     idVenta: number,
     idMaterial: number,
-    material: Material,
-    venta: Venta,
+    Material: Material,
 }

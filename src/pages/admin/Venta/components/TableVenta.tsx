@@ -7,6 +7,8 @@ import {
     TableHeader,
     TableRow,
   } from "../../../../components/ui/table";
+import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
+import { MyDocument } from "../../../../components/pdf/MyDocument";
 import { apiService } from "../../../../services/apiServices";
 import { Venta } from "../../../../components/interface/interface";
 import DialogVenta from "./DialogVenta";
@@ -31,6 +33,15 @@ const TableVenta = () => {
         });
     }, []);
 
+    const renderPDF = async () => {
+      const blob = await pdf(<MyDocument />).toBlob(); // Genera el PDF como Blob
+      const url = URL.createObjectURL(blob); // Crea una URL para descargar el Blob
+      const link = document.createElement('a'); // Crea un elemento <a>
+      link.href = url;
+      link.download = 'reporte.pdf'; // Nombre del archivo descargado
+      link.click(); // Simula un clic en el enlace
+      URL.revokeObjectURL(url); // Limpia la URL creada
+    };
     
 
   return (
@@ -61,11 +72,11 @@ const TableVenta = () => {
             ) : (
               filteredVentas.map((venta: Venta) => (
                 <TableRow key={venta.id} className="hover:bg-orange-100 border-t border-orange-300">
-                  <TableCell className="px-4 py-2 text-orange-800">{venta.fecha}</TableCell>
+                  <TableCell className="px-4 py-2 text-orange-800">{venta.id} {venta.fecha}</TableCell>
                   <TableCell className="px-4 py-2 text-orange-800">{venta.totalVenta}</TableCell>
                   <TableCell className="px-4 py-2 text-orange-800">
-                    <DialogVenta idVenta={venta.id}/>
-                    <button className="bg-amber-500 text-white px-4 py-2 rounded-lg">Generar Reporte</button>
+                    <DialogVenta idVenta={venta.id} fecha={venta.fecha} totalVenta={venta.totalVenta} />
+                    <button className="bg-amber-500 text-white px-4 py-2 rounded-lg" onClick={renderPDF} >Generar Reporte</button>
                     </TableCell>
                 </TableRow>
               ))
