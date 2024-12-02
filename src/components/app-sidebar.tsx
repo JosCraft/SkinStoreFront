@@ -25,18 +25,13 @@ const items = [
     icon: Archive,
   },
   {
-    title: "Pedidos",
-    url: "#",
-    icon: HiBuildingStorefront ,
-  },
-  {
     title: "Usuarios",
     url: "#",
     icon: HiOutlineUsers,
   },
   {
-    title: "Informes",
-    url: "#",
+    title: "Ventas",
+    url: "/adm/ventas",
     icon: BiLineChart ,
   },
 ]

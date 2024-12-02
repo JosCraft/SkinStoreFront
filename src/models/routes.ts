@@ -11,6 +11,6 @@ export const PrivateRoutesAdmin = {
     INVENTORY : 'inventory',
     PRODUCTS : 'products',
     USERS : 'users',
-    ORDERS : 'orders',
+    VENTAS : 'ventas',
     SETTINGS : 'settings',
 };

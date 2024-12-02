@@ -46,3 +46,16 @@ export interface Car{
     precioTotal?: number ,
 
 }
+
+export interface Venta{
+    id: number,
+    fecha: string,
+    totalVenta: number,
+}
+
+export interface VentaMaterial{
+    idVenta: number,
+    idMaterial: number,
+    material: Material,
+    venta: Venta,
+}
