@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { Tipo } from '../interface/interface';
-import { apiService } from "../../services/apiServices";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
+import { Tipo } from '../../../../components/interface/interface';
+import { apiService } from "../../../../services/apiServices";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../../../../components/ui/select';
 import { CiCirclePlus } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { Button } from '../ui/button';
+import { Button } from '../../../../components/ui/button';
 import { FormTipo } from './FormTipo';
-import { toast } from '../../hooks/use-toast';
-import { selectedTipoAtom } from '../../context/context';
-import { filterItems } from '../../lib/utils';
+import { toast } from '../../../../hooks/use-toast';
+import { selectedTipoAtom } from '../../../../context/context';
+import { filterItems } from '../../../../lib/utils';
 
-import { selectedCategoriaAtom, selectedCurtiembreAtom, selectedColorAtom } from '../../context/context';
+import { selectedCategoriaAtom, selectedCurtiembreAtom, selectedColorAtom } from '../../../../context/context';
 
 
 

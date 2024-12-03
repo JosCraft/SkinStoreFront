@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { apiService } from '../../services/apiServices';
-import { Material } from '../interface/interface';
+import { apiService } from '../../../../services/apiServices';
+import { Material } from '../../../../components/interface/interface';
 import { CiCirclePlus } from 'react-icons/ci';
 import {
   Table,
@@ -10,11 +10,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../ui/table';
-import { selectedTipoAtom } from '../../context/context';
+} from '../../../../components/ui/table';
+import { selectedTipoAtom } from '../../../../context/context';
 import { useAtom } from 'jotai';
-import { Button } from '../ui/button';
-import { toast } from '../../hooks/use-toast';
+import { Button } from '../../../../components/ui/button';
+import { toast } from '../../../../hooks/use-toast';
 
 export const TableItems = () => {
   const [items, setItems] = useState<Material[]>([]);

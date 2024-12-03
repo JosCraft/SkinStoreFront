@@ -6,7 +6,7 @@ const Venta = () => {
   return (
     <MainAdmLayout>
       <div className="container mx-auto">
-        <h1 className="text-4xl font-bold text-center mt-8">Ventas</h1>
+        <h1 className="text-4xl font-bold text-center mt-8">Ventas</h1>       
             <TableVenta />
       </div>
     </MainAdmLayout>

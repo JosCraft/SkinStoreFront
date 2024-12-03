@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
-import { Categoria } from '../interface/interface'
-import { apiService } from "../../services/apiServices";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
+import { Categoria } from '../../../../components/interface/interface'
+import { apiService } from "../../../../services/apiServices";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../../../../components/ui/select'
 import { CiCirclePlus } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { Button } from '../ui/button';
+import { Button } from '../../../../components/ui/button';
 import { FormCategoria } from './FormCategoria';
-import { toast } from '../../hooks/use-toast';
-import { selectedCategoriaAtom } from '../../context/context';
+import { toast } from '../../../../hooks/use-toast';
+import { selectedCategoriaAtom } from '../../../../context/context';
 
 
 export const SelectCategoria = () => {

@@ -42,7 +42,6 @@ const DialogVenta = ({ idVenta,fecha,totalVenta }: DialogVentaProps) => {
     
     }
   };
-  console.log(ventamaterial);
   return (
     <Dialog open={isVisible} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>

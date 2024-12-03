@@ -51,10 +51,29 @@ export interface Venta{
     id: number,
     fecha: string,
     totalVenta: number,
+    usuario: User,
 }
 
 export interface VentaMaterial{
     idVenta: number,
     idMaterial: number,
-    Material: Material,
+    material: Material,
+    venta?: Venta,
+}
+
+export interface User{
+    id: number,
+    nombre: string,
+    apelldo: string,
+    email: string,
+    password: string,
+    rol: string,
+    activo: boolean,
+    numero: string,
+}
+
+export interface PlotVenta{
+    tipoMaterial: string,
+    totalVenta: number,
+    totalIngreso: number,
 }

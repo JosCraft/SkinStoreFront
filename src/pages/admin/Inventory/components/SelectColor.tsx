@@ -1,10 +1,10 @@
 import { useAtom } from 'jotai';
 import { useState, useEffect } from 'react';
-import { Color } from '../interface/interface';
-import { apiService } from '../../services/apiServices';
-import { selectedColorAtom } from '../../context/context';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
-import { Button } from '../ui/button';
+import { Color } from '../../../../components/interface/interface';
+import { apiService } from '../../../../services/apiServices';
+import { selectedColorAtom } from '../../../../context/context';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../../../../components/ui/select'
+import { Button } from '../../../../components/ui/button';
 import FormColor from './FormColor';
 import { CiCirclePlus } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";

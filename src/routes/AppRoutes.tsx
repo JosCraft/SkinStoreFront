@@ -10,7 +10,7 @@ import { Suspense, lazy } from 'react';
 
 const Login = lazy(() => import('../pages/auth/Login'));
 const Admin = lazy(() => import('../pages/admin/Admin'));
-
+import {MyDocument} from '../components/pdf/MyDocument'
 const AppRoutes = () => {
   return (
     <Suspense fallback={<>Cargando</>}>
@@ -24,6 +24,7 @@ const AppRoutes = () => {
           <Route element={<AuthGuard/>}>
             <Route path={`${PrivateRoutesAdmin.BASE}/*`} element={<Admin/>}/>
           </Route>
+          <Route path="/pdf" element={<MyDocument/>}/>
         </RoutesNotFound>
       </BrowserRouter>
     </Suspense>

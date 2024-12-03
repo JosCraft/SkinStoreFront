@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { apiService } from '../../services/apiServices'
+import { apiService } from '../../../../services/apiServices'
 
-import { Input } from '../ui/input';
-import { toast } from '../../hooks/use-toast';
-import { Button } from '../ui/button';
+import { Input } from '../../../../components/ui/input';
+import { toast } from '../../../../hooks/use-toast';
+import { Button } from '../../../../components/ui/button';
 
 interface FormCategoriaProps {
     setIsCreate: (isCreate: boolean) => void;

@@ -7,8 +7,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "../ui/dialog";
-import { Button } from "../ui/button";
+  } from "../../../../components/ui/dialog";
+import { Button } from "../../../../components/ui/button";
 import { HiMiniPlusCircle } from "react-icons/hi2";
 
 import { useState } from "react";

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useAtom } from 'jotai';
-import { apiService } from '../../services/apiServices';
+import { apiService } from '../../../../services/apiServices';
 
-import { Input } from '../ui/input';
-import { toast } from '../../hooks/use-toast';
-import { Button } from '../ui/button';
+import { Input } from '../../../../components/ui/input';
+import { toast } from '../../../../hooks/use-toast';
+import { Button } from '../../../../components/ui/button';
 
-import { selectedCategoriaAtom, selectedCurtiembreAtom, selectedColorAtom } from '../../context/context';
+import { selectedCategoriaAtom, selectedCurtiembreAtom, selectedColorAtom } from '../../../../context/context';
 
 interface FormTipoProps {
   setIsCreate: (isCreate: boolean) => void;
