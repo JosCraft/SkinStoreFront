@@ -40,13 +40,19 @@ const ChartGanancias = () => {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        <LineChart
-          series={[{ data: chartData.values, label: "Ganancia" }]}
-          xAxis={[{ data: chartData.labels, scaleType: "point", label: "Fecha" }]}
-          yAxis={[{ scaleType: "linear", label: "Ganancias" }]}
-          height={400}
-          margin={{ top: 20, bottom: 50, left: 50, right: 20 }}
-        />
+        <>
+         {/* Line Chart for Ganancias */}
+         <div className="bg-amber-50 border border-amber-200 p-4 rounded shadow-md">
+            <h2 className="text-amber-900 font-bold mb-4">Ganancias por Fecha</h2>
+            <LineChart
+              series={[{ data: chartData.values, label: "Ganancia" }]}
+              xAxis={[{ data: chartData.labels, scaleType: "point", label: "Fecha" }]}
+              yAxis={[{ scaleType: "linear", label: "Ganancias" }]}
+              height={400}
+              margin={{ top: 20, bottom: 50, left: 50, right: 20 }}
+            />
+          </div>
+        </>
       )}
     </div>
   );

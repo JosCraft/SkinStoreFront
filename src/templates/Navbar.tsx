@@ -5,20 +5,21 @@ import { Menu, X } from "lucide-react";
 import { FaHome, FaInfoCircle, FaStore } from 'react-icons/fa';
 import { DialogCar } from "../components/dialogCar/DialogCar";
 import { jwtDecode } from "jwt-decode"; // Solo si necesitas decodificar el token (opcional).
+import { PrivateRoutesAdmin } from "../models";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    const [role, setRole] = useState<string | null>(null);
     // Función para verificar el token
     const checkAuthentication = () => {
         const token = localStorage.getItem('authToken'); // Recupera el token
         if (token) {
             try {
-                // Opcional: Decodificar el token para verificar su validez
                 const decoded = jwtDecode(token); 
-                const isExpired = decoded.exp ? decoded.exp * 1000 < Date.now() : true; // Verifica la expiración
+                const isExpired = decoded.exp ? decoded.exp * 1000 < Date.now() : true; 
                 setIsAuthenticated(!isExpired);
+                setRole(decoded.role);
             } catch (error) {
                 console.error("Token inválido", error);
                 setIsAuthenticated(false);
@@ -30,20 +31,20 @@ const Navbar = () => {
 
     useEffect(() => {
         checkAuthentication();
-    }, []); // Se ejecuta al cargar el componente
+    }, []); 
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
     const handleLogin = () => {
-        window.location.href = "/login"; // Cambia a la ruta de login.
+        window.location.href = "/login"; 
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('authToken'); // Elimina el token.
+        localStorage.removeItem('authToken'); 
         setIsAuthenticated(false);
-        window.location.reload(); // Opcional: Recarga la página.
+        window.location.reload(); 
     };
 
     return (
@@ -74,6 +75,15 @@ const Navbar = () => {
                     {isAuthenticated ? (
                         <>
                             <DialogCar />
+                            <span className="text-white">Bienvenido, {role}</span>
+                            <a href={PrivateRoutesAdmin.BASE} >
+                                <Button
+                                    className="bg-red-500 text-white hover:bg-red-700 rounded shadow-sm ml-4"
+                                    
+                                >
+                                    GESTIONAR
+                                </Button>
+                            </a>
                             <Button
                                 className="bg-red-500 text-white hover:bg-red-700 rounded shadow-sm ml-4"
                                 onClick={handleLogout}

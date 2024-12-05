@@ -1,79 +1,89 @@
-import { BellRing, Check } from "lucide-react"
- 
-import { cn } from "../../../../lib/utils"
-import { Button } from "../../../../components/ui/button"
+import { Users, Package, DollarSign, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../../components/ui/card"
-import { Switch } from "../../../../components/ui/switch"
- 
-const notifications = [
-  {
-    title: "Your call has been confirmed.",
-    description: "1 hour ago",
-  },
-  {
-    title: "You have a new message!",
-    description: "1 hour ago",
-  },
-  {
-    title: "Your subscription is expiring soon!",
-    description: "2 hours ago",
-  },
-]
-type CardProps = React.ComponentProps<typeof Card>
+} from "../../../../components/ui/card";
+import { apiService } from "../../../../services/apiServices";
 
-const CardDashboard = ({ className, ...props }: CardProps) => {
-  return (
-    <Card className={cn("w-[380px]", className)} {...props}>
-      <CardHeader>
-        <CardTitle>Notifications</CardTitle>
-        <CardDescription>You have 3 unread messages.</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className=" flex items-center space-x-4 rounded-md border p-4">
-          <BellRing />
-          <div className="flex-1 space-y-1">
-            <p className="text-sm font-medium leading-none">
-              Push Notifications
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Send notifications to device.
-            </p>
-          </div>
-          <Switch />
-        </div>
-        <div>
-          {notifications.map((notification, index) => (
-            <div
-              key={index}
-              className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
-            >
-              <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-              <div className="space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {notification.title}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {notification.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button className="w-full">
-          <Check /> Mark all as read
-        </Button>
-      </CardFooter>
-    </Card>
-  )
+interface Counts {
+  cant_users: number;
+  cant_material: number;
+  cant_ganancias: number;
+  cant_ventas: number;
 }
 
-export default CardDashboard
+const CardDashboard = () => {
+  const [items, setItems] = useState<Counts>({
+    cant_users: 0,
+    cant_material: 0,
+    cant_ganancias: 0,
+    cant_ventas: 0,
+  });
+
+  useEffect(() => {
+    apiService
+      .get("dashboard/counts")
+      .then((data: Counts) => {
+        setItems(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <div className="flex flex-wrap gap-5 items-center mt-5">
+      
+      <Card className="w-full sm:w-1/5 flex bg-amber-500 hover:bg-amber-700
+        transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300   drop-shadow-xl shadow-xl
+      ">
+        <CardHeader className="flex items-center space-x-4">
+          <Users className="text-primary w-8 h-8" />
+          <CardTitle>Usuarios</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center space-x-4">
+          <CardDescription className="text-xl text-black " > {items.cant_users}</CardDescription>
+        </CardContent>
+      </Card>
+     
+      <Card className="w-full sm:w-1/5 flex bg-amber-500 hover:bg-amber-700
+        transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300  drop-shadow-xl shadow-xl">
+        <CardHeader className="flex items-center space-x-4">
+          <Package className="text-primary w-8 h-8" />
+          <CardTitle>Materiales</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center space-x-4">
+          <CardDescription  className="text-xl text-black " >{items.cant_material}</CardDescription>
+        </CardContent>
+      </Card>
+
+      <Card className="w-full sm:w-1/5 flex bg-amber-500 hover:bg-amber-700
+        transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300  drop-shadow-xl shadow-xl">
+        <CardHeader className="flex items-center space-x-4">
+          <DollarSign className="text-primary w-8 h-8" />
+          <CardTitle>Ganancias</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center space-x-4">
+          <CardDescription  className="text-xl text-black " > Bs {items.cant_ganancias.toFixed(2)}</CardDescription>
+        </CardContent>
+      </Card>
+   
+      <Card className="w-full sm:w-1/5 flex bg-amber-500 hover:bg-amber-700
+        transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300  drop-shadow-xl shadow-xl">
+        <CardHeader className="flex items-center space-x-4">
+          <ShoppingCart className="text-primary w-8 h-8" />
+          <CardTitle>Ventas</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center space-x-4">
+          <CardDescription className="text-xl text-black " >{items.cant_ventas}</CardDescription>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default CardDashboard;

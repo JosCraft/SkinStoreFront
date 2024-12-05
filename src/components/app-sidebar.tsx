@@ -11,6 +11,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { PublicRoutes } from "../models";
+
+const handleLogout = () => {
+  localStorage.removeItem('authToken'); 
+  window.location.reload(); 
+};
 
 // Menu items.
 const items = [
@@ -26,13 +32,24 @@ const items = [
   },
   {
     title: "Usuarios",
-    url: "#",
+    url: "/adm/users",
     icon: HiOutlineUsers,
   },
   {
     title: "Ventas",
     url: "/adm/ventas",
     icon: BiLineChart ,
+  },
+  {
+    title: "Tienda",
+    url: '/shop',
+    icon: HiBuildingStorefront,
+  },
+  {
+    title: "Cerrar Sesión",
+    url: "/",
+    icon: BiLineChart ,
+    onClick: handleLogout,
   },
 ]
 
@@ -46,7 +63,9 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton className="hover:bg-amber-500 transition-colors duration-200  border-b  " asChild>
-                    <a href={item.url}>
+                    <a href={item.url}
+                      onClick={item.onClick}
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </a>

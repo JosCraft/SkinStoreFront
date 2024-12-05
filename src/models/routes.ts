@@ -1,5 +1,9 @@
 export const PublicRoutes = {
     LOGIN : '/login',  
+    HOME : '/',
+    ABOUT : '/about',
+    SHOP : '/shop',
+    REGISTER : '/register',
 };
 
 export const PrivateRoutes = {

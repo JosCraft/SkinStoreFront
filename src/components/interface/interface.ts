@@ -64,10 +64,10 @@ export interface VentaMaterial{
 export interface User{
     id: number,
     nombre: string,
-    apelldo: string,
+    apelldio: string,
     email: string,
     password: string,
-    rol: string,
+    role: string,
     activo: boolean,
     numero: string,
 }

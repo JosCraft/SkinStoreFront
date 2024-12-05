@@ -1,6 +1,6 @@
 
 import MainAdmLayout from '../../../templates/MainAdmLayout'
-import { ChartGanancias, ChartVentas, CardDashboard  } from './components'
+import { ChartGanancias, ChartVentas, CardDashboard, CardStat, CardGa  } from './components'
 
 export const Dashboard = () => {
   return (
@@ -13,15 +13,17 @@ export const Dashboard = () => {
         {/*Card de Ganancias */}
         {/*Card de Ventas */}
 
-        {/*Plot de ventas */}
-        <ChartVentas />
-        {/*Plot de ganancias */}
-        <ChartGanancias />
+        <div  className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4' >
+          {/*Plot de ventas */}
+          <ChartVentas />
+          {/*Plot de ganancias */}
+          <ChartGanancias />
+        </div>
+       
         {/*Card de material mas vendido */}
-        {/*Card de material menos vendido */}
+        <CardStat />
         {/*Card de material con mas ganancias */}
-        {/*Card de material con menos ganancias*/}
-
+        <CardGa />
 
       </div>
     </MainAdmLayout>

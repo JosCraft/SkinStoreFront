@@ -1,11 +1,12 @@
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_BASE_URL
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-async function fetchAPI(endpoint : any, { method = 'GET', body = null, params = {} } = {}) {
+async function fetchAPI(endpoint, { method = 'GET', body = null, params = {} } = {}) {
+    const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
     const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer token`
+        'Authorization': token ? `Bearer ${token}` : undefined // Set Authorization header only if token exists
     };
 
     try {
@@ -16,7 +17,7 @@ async function fetchAPI(endpoint : any, { method = 'GET', body = null, params = 
             data: body ? body : undefined,
             params: params
         };
-        
+
         let response = await axios(options);
         return response.data;
     } catch (error) {

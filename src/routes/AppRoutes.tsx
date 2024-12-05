@@ -4,13 +4,12 @@ import AboutPage from '../pages/About';
 import Shop from '../pages/Shop';
 import { Register } from '../pages/auth';
 import { PrivateRoutesAdmin, PublicRoutes } from '../models';
-import { AuthGuard } from '../guards';
+import { AuthGuard, AdminGuard } from '../guards';
 import { RoutesNotFound } from '../utilities';
 import { Suspense, lazy } from 'react';
 
 const Login = lazy(() => import('../pages/auth/Login'));
 const Admin = lazy(() => import('../pages/admin/Admin'));
-import {MyDocument} from '../components/pdf/MyDocument'
 const AppRoutes = () => {
   return (
     <Suspense fallback={<>Cargando</>}>
@@ -22,9 +21,11 @@ const AppRoutes = () => {
           <Route path="/register" element={<Register/>}/>
           <Route path={PublicRoutes.LOGIN} element={<Login/>}/>
           <Route element={<AuthGuard/>}>
-            <Route path={`${PrivateRoutesAdmin.BASE}/*`} element={<Admin/>}/>
+
+            <Route element={<AdminGuard/>}>
+              <Route path={`${PrivateRoutesAdmin.BASE}/*`} element={<Admin/>}/>
+            </Route>
           </Route>
-          <Route path="/pdf" element={<MyDocument/>}/>
         </RoutesNotFound>
       </BrowserRouter>
     </Suspense>
